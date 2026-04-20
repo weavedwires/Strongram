@@ -360,7 +360,7 @@ public class Filters {
 
     @SafeVarargs
     public static <T> @NotNull Filter iterateOr(Function<T, Filter> filter, T t, @Nullable T... ts) {
-       return iterate(filter, Filter::or, t, ts);
+        return iterate(filter, Filter::or, t, ts);
     }
 
     @SafeVarargs
@@ -370,8 +370,8 @@ public class Filters {
 
     @SafeVarargs
     private static <T> @NotNull Filter iterate(Function<T, Filter> converter,
-                                                 BiFunction<Filter, Filter, Filter> strategy,
-                                                 T t, @Nullable T... ts) {
+                                               BiFunction<Filter, Filter, Filter> strategy,
+                                               T t, @Nullable T... ts) {
         Filter filter = converter.apply(t);
         if (ts == null) {
             return filter;

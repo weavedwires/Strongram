@@ -4,5 +4,6 @@ import ru.daniil4jk.strongram.core.response.responder.factory.SmartResponderFact
 
 public interface Bot extends UpdateProcessor {
     String getUsername();
+
     SmartResponderFactory getResponderFactory();
 }

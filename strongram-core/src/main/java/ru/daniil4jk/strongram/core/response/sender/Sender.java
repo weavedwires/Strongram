@@ -56,38 +56,38 @@ public class Sender {
     }
 
     private void sendSingleMessage(
-        @NotNull Response<?> response,
-        int messageNumber,
-        int totalMessages
+            @NotNull Response<?> response,
+            int messageNumber,
+            int totalMessages
     ) {
         try {
             response.sendUsing(client.getClient());
             log.trace(
-                "Message {}/{} sent successfully",
-                messageNumber,
-                totalMessages
+                    "Message {}/{} sent successfully",
+                    messageNumber,
+                    totalMessages
             );
         } catch (Exception e) {
             log.warn(
-                "Batch processing interrupted at message {}/{}",
-                messageNumber,
-                totalMessages
+                    "Batch processing interrupted at message {}/{}",
+                    messageNumber,
+                    totalMessages
             );
         }
     }
 
     private void applyDelay(
-        long delayMillis,
-        int messageNumber,
-        int totalMessages
+            long delayMillis,
+            int messageNumber,
+            int totalMessages
     ) throws InterruptedException {
         try {
             Thread.sleep(delayMillis);
         } catch (InterruptedException e) {
             log.warn(
-                "Message sending interrupted after {}/{}",
-                messageNumber,
-                totalMessages
+                    "Message sending interrupted after {}/{}",
+                    messageNumber,
+                    totalMessages
             );
             Thread.currentThread().interrupt();
             throw e;

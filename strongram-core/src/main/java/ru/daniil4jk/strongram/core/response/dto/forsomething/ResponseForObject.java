@@ -17,9 +17,9 @@ import java.util.concurrent.CompletableFuture;
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public class ResponseForObject<
-    Method extends PartialBotApiMethod<Object>,
-    Object extends Serializable
-> implements ResponseForSomething<Method, Object> {
+        Method extends PartialBotApiMethod<Object>,
+        Object extends Serializable
+        > implements ResponseForSomething<Method, Object> {
 
     private final Method message;
     private final SendFunction<Object> send;
@@ -58,8 +58,8 @@ public class ResponseForObject<
             return chatId != null ? chatId.toString() : "unknown";
         } catch (Exception e) {
             log.warn(
-                "Cannot extract chatId from message: {}",
-                message.getClass().getSimpleName()
+                    "Cannot extract chatId from message: {}",
+                    message.getClass().getSimpleName()
             );
             return "unknown";
         }

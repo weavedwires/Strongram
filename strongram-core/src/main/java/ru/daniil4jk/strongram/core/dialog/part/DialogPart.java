@@ -50,8 +50,8 @@ public interface DialogPart<ENUM extends Enum<ENUM>> extends Consumer<RequestCon
      * Injects the dialog context, providing access to shared user data,
      * state transitions, and other dialog-specific tools.
      *
-     * @apiNote This method requires to be called after adding part to the dialog.
      * @param dCtx The dialog context associated with the current conversation.
+     * @apiNote This method requires to be called after adding part to the dialog.
      */
     void injectDialogContext(DialogContext<ENUM> dCtx);
 }

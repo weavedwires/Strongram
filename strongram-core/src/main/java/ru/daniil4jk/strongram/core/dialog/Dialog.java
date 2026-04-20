@@ -40,7 +40,7 @@ public interface Dialog extends Consumer<RequestContext> {
      * </p>
      *
      * @return {@code true} if the dialog is stopped and cannot accept further input;
-     *         {@code false} if the dialog is active and can continue processing
+     * {@code false} if the dialog is active and can continue processing
      */
     boolean isStopped();
 

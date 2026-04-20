@@ -31,9 +31,9 @@ public class OrderConfigurator<T> {
     }
 
     private void addConditionalInternal(
-        int padding,
-        Class<? extends T> finding,
-        T toAdd
+            int padding,
+            Class<? extends T> finding,
+            T toAdd
     ) {
         int i = 0;
         for (

@@ -54,12 +54,15 @@ public abstract class ChainedBot extends BaseBot {
     private UpstreamHandler getUpstreamFirstHandler() {
         return getUpstreamChain().build();
     }
+
     protected Chain<UpstreamHandler> getUpstreamChain() {
         return new Chain<>(getUpstreamFactory());
     }
+
     private TunedOrderConfiguratorFactory<UpstreamHandler> getUpstreamFactory() {
         return new TunedOrderConfiguratorFactory<>(this::configureUpstream);
     }
+
     protected void configureUpstream(OrderConfigurator<UpstreamHandler> chain) {
         chain.add(new CannotProcessUpstreamHandler());
     }
@@ -67,9 +70,11 @@ public abstract class ChainedBot extends BaseBot {
     protected List<DownstreamHandler> getDownstreamList() {
         return getDownstreamFactory().get().asList();
     }
+
     private TunedOrderConfiguratorFactory<DownstreamHandler> getDownstreamFactory() {
         return new TunedOrderConfiguratorFactory<>(this::configureDownstream);
     }
+
     protected void configureDownstream(OrderConfigurator<DownstreamHandler> chain) {
 
     }

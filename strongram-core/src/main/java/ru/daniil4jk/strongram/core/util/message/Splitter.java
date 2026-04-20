@@ -10,7 +10,7 @@ import java.util.List;
 class Splitter {
     public static final String WORD_SEPARATOR = " ";
     public static final int MAX_MSG_SIZE = 4096;
-    
+
     private final String originalMessage;
 
     @Getter
@@ -22,7 +22,7 @@ class Splitter {
             splat = List.of(originalMessage);
             return;
         }
-        
+
         String[] words = originalMessage.split(WORD_SEPARATOR);
 
         splat = new ArrayList<>();

@@ -10,7 +10,7 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 
 public class Delays {
     public static final Delay NULL_DELAY = new Delay(0, Duration.ZERO);
-    public static final Delay[] DELAYS = new Delay[] { //todo протестировать задержки
+    public static final Delay[] DELAYS = new Delay[]{ //todo протестировать задержки
             NULL_DELAY,
             new Delay(30, Duration.of(300, MILLIS)),
             new Delay(100, Duration.of(500, MILLIS)),
@@ -37,8 +37,9 @@ public class Delays {
         return NULL_DELAY;
     }
 
-    public record Delay (
+    public record Delay(
             int minMessages,
             Duration delayBetweenMessages
-    ) {}
+    ) {
+    }
 }

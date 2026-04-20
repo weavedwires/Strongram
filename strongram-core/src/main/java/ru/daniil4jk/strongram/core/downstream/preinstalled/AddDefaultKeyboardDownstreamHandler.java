@@ -119,5 +119,6 @@ public class AddDefaultKeyboardDownstreamHandler extends BaseDownstreamHandler {
             boolean invokable,
             MethodHandle get,
             MethodHandle set
-    ) {}
+    ) {
+    }
 }

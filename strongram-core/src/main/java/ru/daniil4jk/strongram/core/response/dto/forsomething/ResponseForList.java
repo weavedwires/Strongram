@@ -17,14 +17,14 @@ import java.util.concurrent.CompletableFuture;
 @ToString
 @EqualsAndHashCode
 public class ResponseForList<
-    Method extends PartialBotApiMethod<ArrayList<Object>>,
-    Object extends Serializable
-> implements ResponseForSomething<Method, ArrayList<Object>> {
+        Method extends PartialBotApiMethod<ArrayList<Object>>,
+        Object extends Serializable
+        > implements ResponseForSomething<Method, ArrayList<Object>> {
 
     private final Method message;
     private final SendFunction<List<Object>> send;
     private final CompletableFuture<ArrayList<Object>> future =
-        new CompletableFuture<>();
+            new CompletableFuture<>();
 
     public ResponseForList(Method message, SendFunction<List<Object>> send) {
         this.message = message;
@@ -68,8 +68,8 @@ public class ResponseForList<
             return chatId != null ? chatId.toString() : "unknown";
         } catch (Exception e) {
             log.warn(
-                "Cannot extract chatId from message: {}",
-                message.getClass().getSimpleName()
+                    "Cannot extract chatId from message: {}",
+                    message.getClass().getSimpleName()
             );
             return "unknown";
         }

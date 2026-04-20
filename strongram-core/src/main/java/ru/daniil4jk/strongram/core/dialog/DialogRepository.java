@@ -26,7 +26,7 @@ public interface DialogRepository {
     /**
      * Removes a specific dialog for the given user.
      *
-     * @param uuid the TelegramUUID of the user
+     * @param uuid   the TelegramUUID of the user
      * @param dialog the dialog to remove
      */
     void remove(TelegramUUID uuid, Dialog dialog);
@@ -36,7 +36,7 @@ public interface DialogRepository {
      * If dialogs already exist for the user, they may be replaced or merged
      * depending on the implementation.
      *
-     * @param uuid the TelegramUUID of the user
+     * @param uuid    the TelegramUUID of the user
      * @param dialogs the list of dialogs to add
      */
     void addAll(TelegramUUID uuid, List<Dialog> dialogs);

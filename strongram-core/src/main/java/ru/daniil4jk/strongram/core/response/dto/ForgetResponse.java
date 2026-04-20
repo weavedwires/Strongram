@@ -11,8 +11,8 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 @ToString
 @EqualsAndHashCode
 public class ForgetResponse<
-    Method extends PartialBotApiMethod<?>
-> implements Response<Method> {
+        Method extends PartialBotApiMethod<?>
+        > implements Response<Method> {
 
     private final Method message;
     private final SendFunction<?> send;
@@ -50,8 +50,8 @@ public class ForgetResponse<
             return chatId != null ? chatId.toString() : "unknown";
         } catch (Exception e) {
             log.warn(
-                "Cannot extract chatId from message: {}",
-                message.getClass().getSimpleName()
+                    "Cannot extract chatId from message: {}",
+                    message.getClass().getSimpleName()
             );
             return "unknown";
         }

@@ -17,8 +17,11 @@ public abstract class ExtendableDialogPart<ENUM extends Enum<ENUM>> implements D
     );
 
     protected abstract Filter getFilter();
+
     protected abstract void firstNotification(RequestContext rCtx, Storage storage);
+
     protected abstract void repeatNotification(RequestContext rCtx, Storage storage);
+
     protected abstract void accept(RequestContext rCtx, DialogContext<ENUM> dCtx);
 
     @Getter(AccessLevel.PROTECTED)
