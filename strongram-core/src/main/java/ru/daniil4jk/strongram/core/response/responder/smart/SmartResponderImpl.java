@@ -2,7 +2,6 @@ package ru.daniil4jk.strongram.core.response.responder.smart;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.business.SetBusinessAccountProfilePhoto;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.SetChatPhoto;

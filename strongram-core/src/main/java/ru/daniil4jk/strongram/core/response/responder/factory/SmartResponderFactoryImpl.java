@@ -5,31 +5,10 @@ import ru.daniil4jk.strongram.core.context.request.TelegramUUID;
 import ru.daniil4jk.strongram.core.response.responder.sink.SinkResponder;
 import ru.daniil4jk.strongram.core.response.responder.smart.SmartResponder;
 import ru.daniil4jk.strongram.core.response.responder.smart.SmartResponderImpl;
-import ru.daniil4jk.strongram.core.response.sender.ResponseSink;
+import ru.daniil4jk.strongram.core.response.responder.factory.ResponserFactoryImpl;
 
 @RequiredArgsConstructor
-public class SmartResponderFactoryImpl implements SmartResponderFactory {
-    private final ResponserFactory inherit;
-
-    @Override
-    public void setTempCallback(ResponseSink callback) {
-        inherit.setTempCallback(callback);
-    }
-
-    @Override
-    public void resetTempCallback() {
-        inherit.resetTempCallback();
-    }
-
-    @Override
-    public void setPermanentCallback(ResponseSink callback) {
-        inherit.setPermanentCallback(callback);
-    }
-
-    @Override
-    public SinkResponder create() {
-        return inherit.create();
-    }
+public class SmartResponderFactoryImpl extends ResponserFactoryImpl implements SmartResponderFactory {
 
     @Override
     public SmartResponder createSmart(TelegramUUID uuid) {

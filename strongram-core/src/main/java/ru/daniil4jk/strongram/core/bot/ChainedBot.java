@@ -10,8 +10,8 @@ import ru.daniil4jk.strongram.core.context.request.RequestContext;
 import ru.daniil4jk.strongram.core.context.request.RequestContextImpl;
 import ru.daniil4jk.strongram.core.downstream.CallbackWrapper;
 import ru.daniil4jk.strongram.core.downstream.DownstreamHandler;
-import ru.daniil4jk.strongram.core.response.responder.factory.ResponserFactory;
 import ru.daniil4jk.strongram.core.response.responder.factory.ResponserFactoryImpl;
+import ru.daniil4jk.strongram.core.response.responder.factory.SmartResponderFactoryImpl;
 import ru.daniil4jk.strongram.core.response.sender.ResponseSink;
 import ru.daniil4jk.strongram.core.upstream.UpstreamHandler;
 import ru.daniil4jk.strongram.core.upstream.preinstalled.CannotProcessUpstreamHandler;
@@ -31,7 +31,7 @@ public abstract class ChainedBot extends BaseBot {
 
     @Override
     public void accept(Update update, ResponseSink tempCallback) {
-        ResponserFactory resp = getResponserFactory();
+        SmartResponderFactoryImpl resp = getResponserFactory();
         try {
             RequestContext ctx = new RequestContextImpl(this, update, resp);
             resp.setTempCallback(downstreamWrapper.wrap(ctx, tempCallback));
@@ -47,7 +47,8 @@ public abstract class ChainedBot extends BaseBot {
     public void setDefaultCallback(ResponseSink defaultCallback) {
         defaultCallback = downstreamWrapper.wrap(defaultCallback);
         super.setDefaultCallback(defaultCallback);
-        getResponderFactory().setPermanentCallback(defaultCallback);
+        ResponserFactoryImpl resp = getResponserFactory();
+        resp.setPermanentCallback(defaultCallback);
     }
 
     private UpstreamHandler getUpstreamFirstHandler() {

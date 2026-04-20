@@ -1,10 +1,12 @@
 package ru.daniil4jk.strongram.core.response.responder.factory;
 
+import lombok.Setter;
 import ru.daniil4jk.strongram.core.response.responder.sink.SinkResponder;
 import ru.daniil4jk.strongram.core.response.sender.ResponseSink;
 
 public class ResponserFactoryImpl implements ResponserFactory {
     private final ThreadLocal<ResponseSink> tempCallback = new ThreadLocal<>();
+    @Setter
     private ResponseSink permanentCallback;
 
     public void setTempCallback(ResponseSink callback) {
@@ -13,11 +15,6 @@ public class ResponserFactoryImpl implements ResponserFactory {
 
     public void resetTempCallback() {
         tempCallback.remove();
-    }
-
-    @Override
-    public void setPermanentCallback(ResponseSink callback) {
-        permanentCallback = callback;
     }
 
     public ResponseSink getCurrentCallback() {
