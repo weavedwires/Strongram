@@ -2,6 +2,8 @@ package ru.daniil4jk.strongram.core.response.responder.smart;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.jetbrains.annotations.Nullable;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.business.SetBusinessAccountProfilePhoto;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.SetChatPhoto;
@@ -9,8 +11,10 @@ import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.methods.stickers.*;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import ru.daniil4jk.strongram.core.context.request.TelegramUUID;
 import ru.daniil4jk.strongram.core.response.responder.sink.SinkResponder;
 import ru.daniil4jk.strongram.core.util.message.LongMessage;
@@ -27,15 +31,24 @@ import java.util.stream.Collectors;
 public class SmartResponderImpl implements SmartResponder {
     private final Long id;
     private final SinkResponder inherit;
+    private final CallbackQuery queryToAnswer;
 
     public SmartResponderImpl(Long id, SinkResponder inherit) {
-        this.id = id;
-        this.inherit = inherit;
+        this(id, inherit, null);
     }
 
     public SmartResponderImpl(TelegramUUID uuid, SinkResponder inherit) {
-        this.id = uuid.getReplyChatId();
+        this(uuid, inherit, null);
+    }
+
+    public SmartResponderImpl(TelegramUUID uuid, SinkResponder inherit, @Nullable CallbackQuery queryToAnswer) {
+        this(uuid.getReplyChatId(), inherit, queryToAnswer);
+    }
+
+    public SmartResponderImpl(Long id, SinkResponder inherit, @Nullable CallbackQuery queryToAnswer) {
+        this.id = id;
         this.inherit = inherit;
+        this.queryToAnswer = queryToAnswer;
     }
 
     @Override
@@ -44,8 +57,18 @@ public class SmartResponderImpl implements SmartResponder {
     }
 
     @Override
+    public void send(String text, ReplyKeyboard keyboard) {
+        send(id, text, keyboard);
+    }
+
+    @Override
     public CompletableFuture<List<Message>> sendForObject(String text) {
         return sendForObject(id, text);
+    }
+
+    @Override
+    public CompletableFuture<List<Message>> sendForObject(String text, ReplyKeyboard keyboard) {
+        return sendForObject(id, text, keyboard);
     }
 
     @Override
@@ -54,51 +77,81 @@ public class SmartResponderImpl implements SmartResponder {
     }
 
     @Override
+    public void send(String text, File file, MediaType type, ReplyKeyboard keyboard) {
+        send(id, text, file, type, keyboard);
+    }
+
+    @Override
     public CompletableFuture<List<Message>> sendForObject(String text, File file, MediaType type) {
         return sendForObject(id, text, file, type);
     }
 
     @Override
-    public void send(Long id, String text) {
-        List<String> messageTexts = new LongMessage(text).asLegalLengthMessageList();
+    public CompletableFuture<List<Message>> sendForObject(String text, File file, MediaType type, ReplyKeyboard keyboard) {
+        return sendForObject(id, text, file, type, keyboard);
+    }
 
-        for (String part : messageTexts) {
-            sendSingle(id, part);
-        }
+    @Override
+    public void send(Long id, String text) {
+        send(id, text, null);
     }
 
     @Override
     public void send(Long id, String text, File file, MediaType type) {
+        send(id, text, file, type, null);
+    }
+
+    @Override
+    public void send(Long id, String text, ReplyKeyboard keyboard) {
         List<String> messageTexts = new LongMessage(text).asLegalLengthMessageList();
 
-        sendSingle(id, messageTexts.remove(0), file, type);
         for (String part : messageTexts) {
-            sendSingle(id, part);
+            sendSingle(id, part, keyboard);
+        }
+    }
+
+    @Override
+    public void send(Long id, String text, File file, MediaType type, ReplyKeyboard keyboard) {
+        List<String> messageTexts = new LongMessage(text).asLegalLengthMessageList();
+
+        sendSingle(id, messageTexts.remove(0), file, type, keyboard);
+        for (String part : messageTexts) {
+            sendSingle(id, part, keyboard);
         }
     }
 
     @Override
     public CompletableFuture<List<Message>> sendForObject(Long id, String text) {
+        return sendForObject(id, text, null);
+    }
+
+    @Override
+    public CompletableFuture<List<Message>> sendForObject(Long id, String text, File file, MediaType type) {
+        return sendForObject(id, text, file, type, null);
+    }
+
+    @Override
+    public CompletableFuture<List<Message>> sendForObject(Long id, String text, ReplyKeyboard keyboard) {
         List<String> messageTexts = new LongMessage(text).asLegalLengthMessageList();
 
         return CompletableFuture.supplyAsync(() ->
                 messageTexts.stream()
-                        .map(s -> sendForObjectSingle(id, s))
+                        .map(s -> sendForObjectSingle(id, s, keyboard))
                         .map(CompletableFuture::join)
                         .collect(Collectors.toList())
         );
     }
 
     @Override
-    public CompletableFuture<List<Message>> sendForObject(Long id, String text, File file, MediaType type) {
+    public CompletableFuture<List<Message>> sendForObject(Long id, String text, File file, MediaType type, ReplyKeyboard keyboard) {
         List<String> messageTexts = new LongMessage(text).asLegalLengthMessageList();
         List<CompletableFuture<Message>> responses = new ArrayList<>(messageTexts.size());
 
-        var first = sendForObjectSingle(id, messageTexts.remove(0), file, type);
+        var first = sendForObjectSingle(id, messageTexts.remove(0), file, type, keyboard);
         responses.add(first);
 
         messageTexts.stream()
-                .map(s -> sendForObjectSingle(id, s))
+                .map(s -> sendForObjectSingle(id, s, keyboard))
                 .forEach(responses::add);
 
         return CompletableFuture.supplyAsync(() ->
@@ -108,26 +161,28 @@ public class SmartResponderImpl implements SmartResponder {
         );
     }
 
-    private void sendSingle(Long id, String text) {
+    private void sendSingle(Long id, String text, ReplyKeyboard keyboard) {
         send(
                 SendMessage.builder()
                         .text(text)
+                        .replyMarkup(keyboard)
                         .chatId(id)
                         .build()
         );
     }
 
-    private CompletableFuture<Message> sendForObjectSingle(Long id, String text) {
+    private CompletableFuture<Message> sendForObjectSingle(Long id, String text, ReplyKeyboard keyboard) {
         return sendForObject(
                 SendMessage.builder()
                         .text(text)
+                        .replyMarkup(keyboard)
                         .chatId(id)
                         .build()
         );
     }
 
-    private void sendSingle(Long id, String text, File file, MediaType type) {
-        SendMediaBotMethod<Message> method = createMethod(id, text, file, type);
+    private void sendSingle(Long id, String text, File file, MediaType type, ReplyKeyboard keyboard) {
+        SendMediaBotMethod<Message> method = createMethod(id, text, file, type, keyboard);
         switch (type) {
             case Photo -> inherit.send((SendPhoto) method);
             case Video -> inherit.send((SendVideo) method);
@@ -137,8 +192,8 @@ public class SmartResponderImpl implements SmartResponder {
         }
     }
 
-    private CompletableFuture<Message> sendForObjectSingle(Long id, String text, File file, MediaType type) {
-        SendMediaBotMethod<Message> method = createMethod(id, text, file, type);
+    private CompletableFuture<Message> sendForObjectSingle(Long id, String text, File file, MediaType type, ReplyKeyboard keyboard) {
+        SendMediaBotMethod<Message> method = createMethod(id, text, file, type, keyboard);
         return switch (type) {
             case Photo -> inherit.sendForObject((SendPhoto) method);
             case Video -> inherit.sendForObject((SendVideo) method);
@@ -148,34 +203,52 @@ public class SmartResponderImpl implements SmartResponder {
         };
     }
 
-    private SendMediaBotMethod<Message> createMethod(Long id, String text, File file, MediaType type) {
+    private SendMediaBotMethod<Message> createMethod(Long id, String text, File file, MediaType type, ReplyKeyboard keyboard) {
         return switch (type) {
             case Photo -> SendPhoto.builder()
                     .photo(new InputFile(file))
                     .caption(text)
+                    .replyMarkup(keyboard)
                     .chatId(id)
                     .build();
             case Video -> SendVideo.builder()
                     .video(new InputFile(file))
                     .caption(text)
+                    .replyMarkup(keyboard)
                     .chatId(id)
                     .build();
             case Audio -> SendAudio.builder()
                     .audio(new InputFile(file))
                     .caption(text)
+                    .replyMarkup(keyboard)
                     .chatId(id)
                     .build();
             case Voice -> SendVoice.builder()
                     .voice(new InputFile(file))
                     .caption(text)
+                    .replyMarkup(keyboard)
                     .chatId(id)
                     .build();
             case Document -> SendDocument.builder()
                     .document(new InputFile(file))
                     .caption(text)
+                    .replyMarkup(keyboard)
                     .chatId(id)
                     .build();
         };
+    }
+
+    @Override
+    public void answerCallbackQuery(CallbackQuery query) {
+        inherit.send(new AnswerCallbackQuery(query.getId()));
+    }
+
+    @Override
+    public void answerCallbackQuery(CallbackQuery query, String userNotification) {
+        inherit.send(AnswerCallbackQuery.builder()
+                .callbackQueryId(query.getId())
+                .text(userNotification)
+                .build());
     }
 
     @Override

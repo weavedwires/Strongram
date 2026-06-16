@@ -10,8 +10,9 @@ import ru.daniil4jk.strongram.core.context.request.RequestContext;
 import ru.daniil4jk.strongram.core.context.request.RequestContextImpl;
 import ru.daniil4jk.strongram.core.downstream.CallbackWrapper;
 import ru.daniil4jk.strongram.core.downstream.DownstreamHandler;
-import ru.daniil4jk.strongram.core.response.responder.factory.ResponserFactoryImpl;
-import ru.daniil4jk.strongram.core.response.responder.factory.SmartResponderFactoryImpl;
+import ru.daniil4jk.strongram.core.response.responder.factory.ResponderFactory;
+import ru.daniil4jk.strongram.core.response.responder.factory.SinkPipe;
+import ru.daniil4jk.strongram.core.response.responder.factory.SinkResponderFactory;
 import ru.daniil4jk.strongram.core.response.sender.ResponseSink;
 import ru.daniil4jk.strongram.core.upstream.UpstreamHandler;
 import ru.daniil4jk.strongram.core.upstream.preinstalled.CannotProcessUpstreamHandler;
@@ -30,16 +31,19 @@ public abstract class ChainedBot extends BaseBot {
     }
 
     @Override
+    @SuppressWarnings("UnnecessaryLocalVariable")
     public void accept(Update update, ResponseSink tempCallback) {
-        SmartResponderFactoryImpl resp = getResponserFactory();
+        SinkResponderFactory combine = getResponderFactory();
+        SinkPipe pipe = combine;
+        ResponderFactory respFactory = combine;
         try {
-            RequestContext ctx = new RequestContextImpl(this, update, resp);
-            resp.setTempCallback(downstreamWrapper.wrap(ctx, tempCallback));
+            RequestContext ctx = new RequestContextImpl(this, update, respFactory);
+            pipe.setTempCallback(downstreamWrapper.wrap(ctx, tempCallback));
             upstreamChain.initOrGet().accept(ctx);
         } catch (Exception e) {
             log.error("Error occurred while chain processing update", e);
         } finally {
-            resp.resetTempCallback();
+            pipe.resetTempCallback();
         }
     }
 
@@ -47,7 +51,7 @@ public abstract class ChainedBot extends BaseBot {
     public void setDefaultCallback(ResponseSink defaultCallback) {
         defaultCallback = downstreamWrapper.wrap(defaultCallback);
         super.setDefaultCallback(defaultCallback);
-        ResponserFactoryImpl resp = getResponserFactory();
+        SinkPipe resp = getResponderFactory();
         resp.setPermanentCallback(defaultCallback);
     }
 

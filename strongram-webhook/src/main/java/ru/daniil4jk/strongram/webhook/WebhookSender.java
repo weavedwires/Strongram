@@ -7,10 +7,11 @@ import ru.daniil4jk.strongram.core.response.dto.Response;
 import ru.daniil4jk.strongram.core.response.sender.Sender;
 
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ExecutorService;
+import java.util.function.Supplier;
 
 public class WebhookSender extends Sender {
-    public WebhookSender(ScheduledExecutorService executor, TelegramClientProvider client) {
+    public WebhookSender(Supplier<ExecutorService> executor, TelegramClientProvider client) {
         super(executor, client);
     }
 

@@ -9,7 +9,6 @@ import ru.daniil4jk.strongram.core.response.client.provider.MutableTelegramClien
 import ru.daniil4jk.strongram.core.response.client.provider.TelegramClientProvider;
 import ru.daniil4jk.strongram.core.response.dto.Response;
 import ru.daniil4jk.strongram.core.response.sender.Sender;
-import ru.daniil4jk.strongram.longpolling.adapter.interfaces.HasLongPollingBot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +17,13 @@ import java.util.concurrent.Executors;
 
 @Slf4j
 public class LongPollingBotAdapter implements HasLongPollingBot {
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-
-    private final TelegramClientProvider provider =
-        new MutableTelegramClientProvider();
+    private final TelegramClientProvider clientProvider = new MutableTelegramClientProvider();
 
     @Getter
     private final String token;
     private final Bot bot;
     private final Sender sender;
+    private final ExecutorService sendExecutor;
 
     public LongPollingBotAdapter(String token, Bot bot) {
         this(token, bot, Executors.newSingleThreadScheduledExecutor());
@@ -39,7 +36,8 @@ public class LongPollingBotAdapter implements HasLongPollingBot {
     ) {
         this.token = token;
         this.bot = bot;
-        this.sender = new Sender(sendExecutor, provider);
+        this.sender = new Sender(() -> sendExecutor, clientProvider);
+        this.sendExecutor = sendExecutor;
 
         setBotCallback();
     }
@@ -48,11 +46,16 @@ public class LongPollingBotAdapter implements HasLongPollingBot {
         bot.setDefaultCallback(sender::sendUsingClient);
     }
 
-    public void consumeSingle(Update update) {
-        executor.execute(() -> consumeSingleInOtherThread(update));
+    @Override
+    public void consume(List<Update> updates) {
+        updates.forEach(this::pushConsumeSingleToExecutor);
     }
 
-    private void consumeSingleInOtherThread(Update update) {
+    private void pushConsumeSingleToExecutor(Update update) {
+        sendExecutor.execute(() -> consumeSingle(update));
+    }
+
+    public void consumeSingle(Update update) {
         try {
             List<Response<?>> collector = new ArrayList<>();
             bot.accept(update, collector::add);
@@ -67,16 +70,16 @@ public class LongPollingBotAdapter implements HasLongPollingBot {
 
     @Override
     public TelegramClient getClient() {
-        return provider.getClient();
+        return clientProvider.getClient();
     }
 
     @Override
     public void setClient(TelegramClient client) {
-        provider.setClient(client);
+        clientProvider.setClient(client);
     }
 
     @Override
     public boolean hasClient() {
-        return provider.hasClient();
+        return clientProvider.hasClient();
     }
 }

@@ -85,7 +85,7 @@ public class WebhookBotAdapter implements TelegramWebhookBot, TelegramClientProv
         this.token = token;
         this.path = Optional.ofNullable(path).orElse("/");
         this.bot = bot;
-        this.sender = new WebhookSender(sendExecutor, provider);
+        this.sender = new WebhookSender(() -> sendExecutor, provider);
         setBotCallback();
     }
 

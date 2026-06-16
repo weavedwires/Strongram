@@ -14,6 +14,7 @@ import ru.daniil4jk.strongram.core.util.Lazy;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public abstract class CommandUpstreamHandler extends FilteredUpstreamHandler {
@@ -22,7 +23,15 @@ public abstract class CommandUpstreamHandler extends FilteredUpstreamHandler {
     private static final String DOG = "@";
     private static final String SLASH = "/";
 
-    private final Lazy<Map<String, EachCommandHandler>> commands = new Lazy<>(this::getCommands);
+    private final Lazy<Map<String, EachCommandHandler>> commands = new Lazy<>(this::formatCommands);
+
+    private Map<String, EachCommandHandler> formatCommands() {
+        return getCommands().entrySet().stream()
+                .collect(Collectors.toMap(
+                        entry -> formatCommand(entry.getKey()),
+                        Map.Entry::getValue
+                ));
+    }
 
     protected abstract Map<String, EachCommandHandler> getCommands();
 

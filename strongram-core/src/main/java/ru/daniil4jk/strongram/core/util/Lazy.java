@@ -17,11 +17,17 @@ public class Lazy<T> implements Supplier<T> {
         this.creator = creator;
     }
 
+    public Lazy(T value) {
+        this.creator = null;
+        this.value = value;
+    }
+
     public void initIfNeed() {
         if (!isInitialized()) {
             synchronized (this) {
                 if (!isInitialized()) {
                     try {
+                        assert creator != null;
                         value = creator.get();
                     } catch (Exception e) {
                         log.error("Lazy initialization throws exception", e);
@@ -35,11 +41,9 @@ public class Lazy<T> implements Supplier<T> {
         return value != null;
     }
 
-    //Раньше get тупо возвращал value, но это сильно путало, поэтому теперь он работает так.
-    //Нужно для совместимости с Supplier<>. Нахуя? В душе не ебу. Возможно когда-нибудь уберу.
     @Override
     public T get() {
-        return initOrGet();
+        return value;
     }
 
     public T initOrGet() {

@@ -7,20 +7,20 @@ import ru.daniil4jk.strongram.core.response.dto.Response;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Supplier;
 
 @Slf4j
 public class Sender {
-
-    private final ExecutorService executor;
+    private final Supplier<ExecutorService> executor;
     private final TelegramClientProvider client;
 
-    public Sender(ExecutorService executor, TelegramClientProvider client) {
+    public Sender(Supplier<ExecutorService> executor, TelegramClientProvider client) {
         this.executor = executor;
         this.client = client;
     }
 
     public void sendUsingClient(@NotNull Response<?> message) {
-        executor.execute(() -> sendSingleMessage(message, 1, 1));
+        executor.get().execute(() -> sendSingleMessage(message, 1, 1));
     }
 
     public void sendAllUsingClient(@NotNull List<Response<?>> messages) {
@@ -28,7 +28,7 @@ public class Sender {
             return;
         }
 
-        executor.execute(() -> processBatch(messages));
+        executor.get().execute(() -> processBatch(messages));
     }
 
     private void processBatch(@NotNull List<Response<?>> messages) {

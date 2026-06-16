@@ -7,7 +7,8 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.daniil4jk.strongram.core.response.responder.factory.SmartResponderFactoryImpl;
+import ru.daniil4jk.strongram.core.response.responder.factory.SinkResponderFactory;
+import ru.daniil4jk.strongram.core.response.responder.factory.SinkResponderFactoryImpl;
 import ru.daniil4jk.strongram.core.response.sender.ResponseSink;
 
 @Getter
@@ -19,7 +20,7 @@ public abstract class BaseBot implements Bot {
     private static final String DOG = "@";
 
     @Getter
-    private final SmartResponderFactoryImpl responserFactory = new SmartResponderFactoryImpl();
+    private final SinkResponderFactory responderFactory = new SinkResponderFactoryImpl();
     @Getter
     private final String username;
     @Setter

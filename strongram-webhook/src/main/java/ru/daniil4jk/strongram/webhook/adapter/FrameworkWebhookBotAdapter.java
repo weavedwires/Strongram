@@ -68,7 +68,7 @@ public class FrameworkWebhookBotAdapter {
         this.provider.setClient(client);
         this.setWebhookMethod = setWebhookMethod;
         this.bot = bot;
-        this.sender = new WebhookSender(sendExecutor, provider);
+        this.sender = new WebhookSender(() -> sendExecutor, provider);
         setBotCallback();
     }
 

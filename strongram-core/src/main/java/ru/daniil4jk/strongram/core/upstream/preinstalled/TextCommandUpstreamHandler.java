@@ -18,12 +18,14 @@ public abstract class TextCommandUpstreamHandler extends FilteredUpstreamHandler
     private static final String EMPTY = "";
     private static final String WHITESPACE = " ";
 
-    private final Lazy<Map<String, EachCommandHandler>> commands = new Lazy<>(this::getFormattedCommands);
+    private final Lazy<Map<String, EachCommandHandler>> commands = new Lazy<>(this::formatCommands);
 
-    private Map<String, EachCommandHandler> getFormattedCommands() {
+    private Map<String, EachCommandHandler> formatCommands() {
         return getCommands().entrySet().stream()
-                .map(entry -> Map.entry(formatCommand(entry.getKey()), entry.getValue()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(
+                        entry -> formatCommand(entry.getKey()),
+                        Map.Entry::getValue
+                ));
     }
 
     protected abstract Map<String, EachCommandHandler> getCommands();

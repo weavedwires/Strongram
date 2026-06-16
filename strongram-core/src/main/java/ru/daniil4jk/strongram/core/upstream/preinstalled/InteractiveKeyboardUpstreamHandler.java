@@ -19,10 +19,17 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-public abstract class InteractiveKeyboardUpstreamHandler extends FilteredUpstreamHandler {
+public class InteractiveKeyboardUpstreamHandler extends FilteredUpstreamHandler {
     private final Lazy<Map<String, InteractiveButton>> buttons = new Lazy<>(this::parseKeyboard);
+    private final InteractiveKeyboardHolder holder;
 
-    protected abstract InteractiveKeyboardHolder getKeyboardHolder();
+    public InteractiveKeyboardUpstreamHandler(ReplyKeyboardMarkup keyboard) {
+        this.holder = new InteractiveKeyboardHolder(keyboard);
+    }
+
+    public InteractiveKeyboardUpstreamHandler(InlineKeyboardMarkup keyboard) {
+        this.holder = new InteractiveKeyboardHolder(keyboard);
+    }
 
     @Override
     protected @NotNull Filter getFilter() {
@@ -38,14 +45,13 @@ public abstract class InteractiveKeyboardUpstreamHandler extends FilteredUpstrea
     }
 
     private Unboxer<String> asCompatibleText() {
-        return switch (getKeyboardHolder().getType()) {
+        return switch (holder.getType()) {
             case Reply -> As.messageText();
             case Inline -> As.callbackQueryData();
         };
     }
 
     protected Map<String, InteractiveButton> parseKeyboard() {
-        InteractiveKeyboardHolder holder = getKeyboardHolder();
         ReplyKeyboard keyboard = holder.getKeyboard();
 
         return switch (holder.getType()) {
