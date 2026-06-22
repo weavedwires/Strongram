@@ -5,6 +5,9 @@ import ru.daniil4jk.strongram.core.context.request.TelegramUUID;
 import ru.daniil4jk.strongram.core.unboxer.finder.UpdateFinder;
 import ru.daniil4jk.strongram.core.unboxer.finder.uuid.TelegramUUIDFinderService;
 
+/**
+ * Extracts a {@link TelegramUUID} from an {@link Update} by delegating to {@link ru.daniil4jk.strongram.core.unboxer.finder.uuid.TelegramUUIDFinderService}.
+ */
 public class UpdateTelegramUUIDFinder extends UpdateFinder<TelegramUUID> {
     @Override
     public Class<TelegramUUID> getOutputClass() {

@@ -20,6 +20,12 @@ import ru.daniil4jk.strongram.core.util.Lazy;
 
 import java.util.List;
 
+/**
+ * Chain of Responsibility bot that processes Telegram updates through
+ * configurable upstream and downstream handler chains. Subclasses override
+ * {@link #configureUpstream} and {@link #configureDownstream} to define
+ * the handler pipeline.
+ */
 @Slf4j
 public abstract class ChainedBot extends BaseBot {
     private final Lazy<UpstreamHandler> upstreamChain = new Lazy<>(this::getUpstreamFirstHandler);

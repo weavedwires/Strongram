@@ -4,6 +4,11 @@ import lombok.Setter;
 import ru.daniil4jk.strongram.core.response.responder.sink.SinkResponder;
 import ru.daniil4jk.strongram.core.response.sender.ResponseSink;
 
+/**
+ * Default implementation of {@link SinkResponderFactory}. Supports a
+ * permanent callback and a thread-local temporary callback for per-request
+ * sink override.
+ */
 public class SinkResponderFactoryImpl implements SinkResponderFactory {
     private final ThreadLocal<ResponseSink> tempCallback = new ThreadLocal<>();
     @Setter

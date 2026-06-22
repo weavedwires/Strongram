@@ -6,6 +6,11 @@ import ru.daniil4jk.strongram.core.context.request.RequestContext;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+/**
+ * A predicate-based filter over {@link RequestContext} with composable combinators
+ * ({@link #and}, {@link #or}, {@link #negate}). Extends {@link Predicate} with
+ * filter-specific defaults and static helpers like {@link #not(Filter)}.
+ */
 public interface Filter extends Predicate<RequestContext> {
     @Override
     @NotNull

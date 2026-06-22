@@ -13,6 +13,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Defines the contract for sending Telegram API methods as fire-and-forget
+ * or for retrieving a result. Provides typed overloads for every
+ * supported sendable method type.
+ */
 public interface Responder {
     <T extends Serializable, Method extends BotApiMethod<T>> void send(Method response);
 

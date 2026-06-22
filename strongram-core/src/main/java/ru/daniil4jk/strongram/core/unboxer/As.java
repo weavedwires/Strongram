@@ -46,6 +46,14 @@ import ru.daniil4jk.strongram.core.unboxer.finder.text.TextFinderService;
 
 import java.util.List;
 
+/**
+ * Static factory that provides pre-built {@link Unboxer} instances for extracting
+ * various fields from Telegram {@link Update} objects. Methods fall into two categories:
+ * <ul>
+ *   <li>Update-scoped extractors — work directly on the {@link Update} (e.g. {@link #callbackQueryData()}, {@link #message()})</li>
+ *   <li>Message-scoped extractors — first resolve a {@link org.telegram.telegrambots.meta.api.objects.message.Message} from the update, then extract a field (e.g. {@link #messageText()}, {@link #photo()})</li>
+ * </ul>
+ */
 public class As {
     @Contract(pure = true)
     public static @NotNull Unboxer<Update> update() {

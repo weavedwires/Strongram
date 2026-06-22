@@ -1,5 +1,8 @@
 package ru.daniil4jk.strongram.core.unboxer.finder;
 
+/**
+ * Exception thrown when a {@link Finder} cannot process the given Telegram object.
+ */
 public class TelegramObjectFinderException extends UnsupportedOperationException {
     public TelegramObjectFinderException(String message) {
         super(message);

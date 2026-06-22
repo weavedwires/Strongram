@@ -7,6 +7,10 @@ import ru.daniil4jk.strongram.core.util.DefaultExecutor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * A variant of {@link LongPollingBotAdapter} that processes each update on a separate
+ * thread from a configurable {@link java.util.concurrent.ExecutorService}.
+ */
 public class MultithreadingLongPollingBotAdapter extends LongPollingBotAdapter {
     private final ExecutorService executor;
 

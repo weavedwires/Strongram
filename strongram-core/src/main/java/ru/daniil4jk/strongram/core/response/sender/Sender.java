@@ -9,6 +9,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 
+/**
+ * Asynchronously dispatches single or batched {@link Response} objects
+ * to the Telegram API using a provided executor and
+ * {@link ru.daniil4jk.strongram.core.response.client.provider.TelegramClientProvider}.
+ * Batched messages are sent with an optimal delay between them.
+ */
 @Slf4j
 public class Sender {
     private final Supplier<ExecutorService> executor;

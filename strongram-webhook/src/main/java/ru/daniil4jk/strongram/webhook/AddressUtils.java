@@ -6,6 +6,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * Utility to construct and validate webhook URL addresses. Ensures the address uses
+ * HTTPS and normalises the protocol, host, and port components.
+ */
 public class AddressUtils {
     private static final String PROTOCOL_DIVIDER = "://";
     private static final String HTTPS_PREFIX = "https" + PROTOCOL_DIVIDER;

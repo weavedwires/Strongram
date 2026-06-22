@@ -9,6 +9,10 @@ import ru.daniil4jk.strongram.core.util.Lazy;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a long text message that may exceed Telegram's per-message limit.
+ * Splits the original message into legal-length chunks on first access and caches the result.
+ */
 @ToString
 public class LongMessage {
     @Getter

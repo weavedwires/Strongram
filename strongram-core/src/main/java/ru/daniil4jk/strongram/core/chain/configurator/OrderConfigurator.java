@@ -8,6 +8,13 @@ import java.util.Iterator;
 import java.util.List;
 
 
+/**
+ * Ordered list builder for handler chains. Supports positional insertion
+ * via {@link #add}, {@link #addBefore}, and {@link #addAfter} relative to
+ * handlers of a given type.
+ *
+ * @param <T> the handler type being ordered
+ */
 @ToString
 @EqualsAndHashCode
 public class OrderConfigurator<T> {

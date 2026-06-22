@@ -15,6 +15,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Adapts a {@link ru.daniil4jk.strongram.core.bot.Bot} to the Telegram long-polling model.
+ * Consumes updates on a single-thread executor and sends responses via a
+ * {@link ru.daniil4jk.strongram.core.response.sender.Sender}.
+ */
 @Slf4j
 public class LongPollingBotAdapter implements HasLongPollingBot {
     private final TelegramClientProvider clientProvider = new MutableTelegramClientProvider();

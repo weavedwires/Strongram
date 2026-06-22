@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * A {@link ResponseForSomething} that captures a list result (e.g. from
+ * {@code SendMediaGroup}) and completes its future when the API call
+ * succeeds or fails.
+ */
 @Slf4j
 @ToString
 @EqualsAndHashCode

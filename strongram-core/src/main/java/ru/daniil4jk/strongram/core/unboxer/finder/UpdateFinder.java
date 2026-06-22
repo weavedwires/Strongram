@@ -3,6 +3,12 @@ package ru.daniil4jk.strongram.core.unboxer.finder;
 import org.telegram.telegrambots.meta.api.interfaces.BotApiObject;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+/**
+ * Base {@link Finder} that operates on an {@link Update}, routing to subclass
+ * parsers based on the specific update sub-type present.
+ *
+ * @param <O> the output type produced by this finder
+ */
 public abstract class UpdateFinder<O> implements Finder<Update, O> {
     private static final String PROCESS_EDITED_ENV_NAME = "PROCESS_EDITED_MESSAGE_VARIANTS";
     private static final boolean PROCESS_EDITED_MESSAGE_VARIANTS =

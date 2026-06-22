@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * In-memory implementation of {@link DialogRepository}.
+ * Stores dialogs in a {@link java.util.HashMap} keyed by {@link ru.daniil4jk.strongram.core.context.request.TelegramUUID}.
+ */
 @ToString
 @EqualsAndHashCode
 public class InMemoryDialogRepository implements DialogRepository {

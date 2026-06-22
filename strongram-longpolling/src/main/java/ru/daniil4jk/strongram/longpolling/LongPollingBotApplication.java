@@ -16,6 +16,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
 
+/**
+ * Entry point for a long-polling bot. Extends the TelegramBots
+ * {@link org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication}
+ * and provides convenience constructors with sensible defaults.
+ */
 public class LongPollingBotApplication extends TelegramBotsLongPollingApplication {
     public LongPollingBotApplication() {
         super(ObjectMapper::new);

@@ -4,6 +4,10 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.util.function.Supplier;
 
+/**
+ * An immutable {@link TelegramClientProvider} that accepts the client only
+ * once and throws on any subsequent attempt to replace it.
+ */
 public class ImmutableTelegramClientProvider implements TelegramClientProvider {
     private final Supplier<TelegramClient> creator;
     private volatile TelegramClient client;

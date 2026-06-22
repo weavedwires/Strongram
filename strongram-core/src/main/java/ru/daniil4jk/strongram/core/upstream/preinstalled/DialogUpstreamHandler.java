@@ -11,6 +11,11 @@ import ru.daniil4jk.strongram.core.upstream.BaseUpstreamHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages active {@link Dialog} instances from a {@link DialogRepository}.
+ * Checks whether an existing dialog can accept the update first; if none matches,
+ * passes the update down the chain and registers any new dialogs placed into the request scope.
+ */
 public class DialogUpstreamHandler extends BaseUpstreamHandler {
     public static final String DIALOGS_CONTEXT_FIELD_NAME = "ru.daniil4jk.strongram_dialogs";
     private final DialogRepository activeDialogs;

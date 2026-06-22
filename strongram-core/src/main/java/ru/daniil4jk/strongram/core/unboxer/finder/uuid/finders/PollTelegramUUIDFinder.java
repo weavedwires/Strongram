@@ -5,6 +5,9 @@ import ru.daniil4jk.strongram.core.context.request.TelegramUUID;
 import ru.daniil4jk.strongram.core.unboxer.finder.TelegramObjectFinderException;
 
 
+/**
+ * {@link TelegramUUIDFinder} for {@link Poll} — always throws because polls carry no user or chat identity.
+ */
 public class PollTelegramUUIDFinder extends TelegramUUIDFinder<Poll> {
     @Override
     public Class<Poll> getInputClass() {

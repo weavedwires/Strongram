@@ -11,6 +11,12 @@ import ru.daniil4jk.strongram.core.response.responder.factory.SinkResponderFacto
 import ru.daniil4jk.strongram.core.response.responder.factory.SinkResponderFactoryImpl;
 import ru.daniil4jk.strongram.core.response.sender.ResponseSink;
 
+/**
+ * Abstract base implementation of {@link Bot}. Provides automatic
+ * {@code @}-prefixing of the username, a shared {@link SinkResponderFactory},
+ * and storage for a default callback. Subclasses need only implement the
+ * update-processing logic.
+ */
 @Getter
 @Slf4j
 @ToString

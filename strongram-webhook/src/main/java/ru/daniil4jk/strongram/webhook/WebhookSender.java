@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 
+/**
+ * A {@link ru.daniil4jk.strongram.core.response.sender.Sender} variant for webhook bots.
+ * If exactly one {@link org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod}
+ * response is produced, it is returned directly for the webhook reply; otherwise responses
+ * are sent via the Telegram client.
+ */
 public class WebhookSender extends Sender {
     public WebhookSender(Supplier<ExecutorService> executor, TelegramClientProvider client) {
         super(executor, client);

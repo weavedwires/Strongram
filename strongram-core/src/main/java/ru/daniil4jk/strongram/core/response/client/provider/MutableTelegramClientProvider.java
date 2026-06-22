@@ -4,6 +4,10 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.util.function.Supplier;
 
+/**
+ * A mutable {@link TelegramClientProvider} that allows the client to be
+ * replaced at any time under synchronization.
+ */
 public class MutableTelegramClientProvider implements TelegramClientProvider {
     private final Supplier<TelegramClient> creator;
     private volatile TelegramClient client;

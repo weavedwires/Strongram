@@ -7,6 +7,11 @@ import ru.daniil4jk.strongram.core.report.exception.ExceptionFormatter;
 import ru.daniil4jk.strongram.core.report.exception.ExceptionFormatters;
 import ru.daniil4jk.strongram.core.upstream.BaseUpstreamHandler;
 
+/**
+ * Try/catch wrapper around the upstream chain. Catches exceptions thrown by downstream
+ * handlers, logs them, and sends a formatted error message to the user via an
+ * {@link ExceptionFormatter}.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class ExceptionReportUpstreamHandler extends BaseUpstreamHandler {

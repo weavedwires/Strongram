@@ -5,6 +5,10 @@ import ru.daniil4jk.strongram.core.context.request.RequestContext;
 import ru.daniil4jk.strongram.core.unboxer.As;
 import ru.daniil4jk.strongram.core.upstream.BaseUpstreamHandler;
 
+/**
+ * Terminal fallback handler that replies with a default "cannot process" message
+ * when no other handler in the chain was able to process the update.
+ */
 @RequiredArgsConstructor
 public class CannotProcessUpstreamHandler extends BaseUpstreamHandler {
     private final String text;

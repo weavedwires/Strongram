@@ -6,6 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Supplier;
 
+/**
+ * Thread-safe lazy initializer. Wraps a {@link Supplier} and ensures the value is
+ * computed at most once under double-checked locking. Useful for deferring
+ * expensive object creation until first access.
+ */
 @Slf4j
 @ToString
 @EqualsAndHashCode

@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Internal utility that splits a string into chunks no larger than {@value #MAX_MSG_SIZE}
+ * characters, breaking on word boundaries when possible.
+ */
 @RequiredArgsConstructor
 class Splitter {
     public static final String WORD_SEPARATOR = " ";

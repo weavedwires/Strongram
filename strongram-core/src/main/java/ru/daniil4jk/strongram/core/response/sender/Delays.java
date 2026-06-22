@@ -8,6 +8,10 @@ import java.util.Collection;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
 
+/**
+ * Provides predefined delay tiers and utilities for computing the optimal
+ * pause between batched Telegram messages based on batch size.
+ */
 public class Delays {
     public static final Delay NULL_DELAY = new Delay(0, Duration.ZERO);
     public static final Delay[] DELAYS = new Delay[]{ //todo протестировать задержки

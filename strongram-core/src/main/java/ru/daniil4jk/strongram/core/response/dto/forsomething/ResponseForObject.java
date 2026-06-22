@@ -12,6 +12,10 @@ import ru.daniil4jk.strongram.core.response.dto.SendFunction;
 import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * A {@link ResponseForSomething} that captures a single object result and
+ * completes its future when the API call succeeds or fails.
+ */
 @Slf4j
 @ToString
 @EqualsAndHashCode

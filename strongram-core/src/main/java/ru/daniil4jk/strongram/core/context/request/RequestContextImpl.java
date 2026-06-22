@@ -14,6 +14,11 @@ import ru.daniil4jk.strongram.core.unboxer.As;
 import ru.daniil4jk.strongram.core.unboxer.Unboxer;
 import ru.daniil4jk.strongram.core.unboxer.finder.uuid.TelegramUUIDFinderService;
 
+/**
+ * Default implementation of {@link RequestContext}. Wraps a {@link Bot},
+ * an {@link Update}, and derives a {@link TelegramUUID} to provide
+ * request-scoped storage and responder access.
+ */
 @ToString
 @EqualsAndHashCode
 public class RequestContextImpl implements RequestContext {

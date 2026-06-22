@@ -15,6 +15,10 @@ import ru.daniil4jk.strongram.core.context.request.RequestContext;
 
 import java.util.function.Consumer;
 
+/**
+ * An {@link InlineKeyboardButton} that implements {@link InteractiveButton},
+ * allowing an action callback to be attached to inline button presses.
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder

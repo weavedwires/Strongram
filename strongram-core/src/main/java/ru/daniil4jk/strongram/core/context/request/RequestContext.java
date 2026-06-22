@@ -6,6 +6,11 @@ import ru.daniil4jk.strongram.core.response.responder.factory.SmartResponderFact
 import ru.daniil4jk.strongram.core.response.responder.smart.SmartResponder;
 import ru.daniil4jk.strongram.core.unboxer.Unboxer;
 
+/**
+ * Per-request context providing access to the Telegram {@link Update}, the
+ * bot's username, request-scoped {@link Storage}, and a {@link SmartResponder}
+ * for sending responses.
+ */
 public interface RequestContext {
     TelegramUUID getUUID();
 

@@ -11,6 +11,11 @@ import ru.daniil4jk.strongram.core.context.request.RequestContext;
 
 import java.util.function.Consumer;
 
+/**
+ * A {@link KeyboardButton} that implements {@link InteractiveButton},
+ * allowing an action callback to be attached to reply keyboard button presses.
+ * {@link #getCallbackData()} returns the button's text.
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder

@@ -19,6 +19,12 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+/**
+ * Routes button presses from an {@link InteractiveKeyboardHolder} to the corresponding
+ * {@link ru.daniil4jk.strongram.core.keyboard.button.InteractiveButton} actions.
+ * Supports both {@link org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup}
+ * and {@link org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup}.
+ */
 public class InteractiveKeyboardUpstreamHandler extends FilteredUpstreamHandler {
     private final Lazy<Map<String, InteractiveButton>> buttons = new Lazy<>(this::parseKeyboard);
     private final InteractiveKeyboardHolder holder;

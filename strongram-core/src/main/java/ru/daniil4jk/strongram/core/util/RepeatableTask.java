@@ -5,6 +5,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A cancellable repeating task scheduled at a fixed rate via a
+ * {@link java.util.concurrent.ScheduledExecutorService}. Implements {@link AutoCloseable}
+ * to allow use in try-with-resources blocks.
+ */
 public class RepeatableTask implements AutoCloseable {
     private final ScheduledExecutorService scheduledExecutor;
     private final Duration betweenCalling;

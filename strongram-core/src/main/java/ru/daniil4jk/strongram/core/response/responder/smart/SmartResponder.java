@@ -9,6 +9,12 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * High-level responder that extends {@link Responder} with convenience
+ * methods for sending text, files, and keyboards to a chat, as well as
+ * answering callback queries. Long messages are automatically split into
+ * Telegram-legal chunks.
+ */
 public interface SmartResponder extends Responder {
     void send(String text);
 

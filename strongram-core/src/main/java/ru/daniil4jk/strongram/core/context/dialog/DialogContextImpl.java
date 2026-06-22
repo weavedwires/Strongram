@@ -5,6 +5,13 @@ import ru.daniil4jk.strongram.core.context.storage.Storage;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Default implementation of {@link DialogContext}. Stores the current state
+ * in an {@link AtomicReference}, provides an {@link InMemoryStorage} for
+ * dialog-scoped data, and supports stopping the dialog via a volatile flag.
+ *
+ * @param <ENUM> the enum type representing dialog states
+ */
 public class DialogContextImpl<ENUM extends Enum<ENUM>> implements DialogContext<ENUM> {
     private final Storage storage;
     private final AtomicReference<ENUM> state;

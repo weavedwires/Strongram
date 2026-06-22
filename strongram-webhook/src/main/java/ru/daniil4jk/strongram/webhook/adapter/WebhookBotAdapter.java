@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * Adapts a {@link ru.daniil4jk.strongram.core.bot.Bot} to the Telegram webhook model.
+ * Implements {@link org.telegram.telegrambots.webhook.TelegramWebhookBot} and handles
+ * webhook registration, update consumption, and response sending.
+ */
 @Slf4j
 public class WebhookBotAdapter implements TelegramWebhookBot, TelegramClientProvider {
     private final TelegramClientProvider provider = new MutableTelegramClientProvider(

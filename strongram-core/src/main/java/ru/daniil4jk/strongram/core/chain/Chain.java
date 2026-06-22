@@ -4,6 +4,13 @@ import ru.daniil4jk.strongram.core.chain.configurator.TunedOrderConfiguratorFact
 
 import java.util.List;
 
+/**
+ * Builds a linked chain of {@link NextConsumer} handlers from an ordered list.
+ * Each element is linked to the next via {@link NextConsumer#setNext}, and the
+ * first element is returned as the chain head.
+ *
+ * @param <T> the handler type, must implement {@link NextConsumer} for itself
+ */
 public class Chain<T extends NextConsumer<T>> {
     private final List<T> chainList;
 

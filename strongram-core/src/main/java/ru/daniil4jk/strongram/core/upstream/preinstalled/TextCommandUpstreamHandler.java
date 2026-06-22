@@ -14,6 +14,11 @@ import ru.daniil4jk.strongram.core.util.Lazy;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Base for handlers that route non-slash text commands to {@link EachCommandHandler} callbacks.
+ * The command is the first whitespace-delimited word, lowercased, and matched against
+ * the map returned by {@link #getCommands()}.
+ */
 public abstract class TextCommandUpstreamHandler extends FilteredUpstreamHandler {
     private static final String EMPTY = "";
     private static final String WHITESPACE = " ";

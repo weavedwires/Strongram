@@ -3,6 +3,9 @@ package ru.daniil4jk.strongram.core.unboxer.finder.text.finders;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import ru.daniil4jk.strongram.core.unboxer.finder.TelegramObjectFinderException;
 
+/**
+ * Extracts the text or caption from a {@link Message}.
+ */
 public class MessageTextFinder extends TextFinder<Message> {
     @Override
     public Class<Message> getInputClass() {

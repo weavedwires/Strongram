@@ -4,6 +4,11 @@ import org.jetbrains.annotations.NotNull;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 
+/**
+ * Uniquely identifies a Telegram conversation participant by associating a
+ * {@link Chat} and/or {@link User}. Provides a safe {@link #getReplyChatId}
+ * method that resolves the appropriate chat ID from whichever entity is present.
+ */
 public record TelegramUUID(Chat chat, User user) {
 
     public TelegramUUID(Chat chat) {

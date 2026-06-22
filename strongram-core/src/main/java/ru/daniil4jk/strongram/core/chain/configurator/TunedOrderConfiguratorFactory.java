@@ -1,5 +1,11 @@
 package ru.daniil4jk.strongram.core.chain.configurator;
 
+/**
+ * Factory that creates an {@link OrderConfigurator} by applying a user-supplied
+ * {@link OrderConfiguratorTuner} tuning function.
+ *
+ * @param <T> the handler type produced by the configurator
+ */
 public class TunedOrderConfiguratorFactory<T> {
     private final OrderConfiguratorTuner<T> userConfiguration;
 

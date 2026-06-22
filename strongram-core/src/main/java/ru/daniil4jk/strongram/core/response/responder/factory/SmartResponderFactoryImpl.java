@@ -7,6 +7,12 @@ import ru.daniil4jk.strongram.core.response.responder.sink.SinkResponder;
 import ru.daniil4jk.strongram.core.response.responder.smart.SmartResponder;
 import ru.daniil4jk.strongram.core.response.responder.smart.SmartResponderImpl;
 
+/**
+ * Default implementation of {@link SmartResponderFactory}. Wraps a
+ * delegate {@link ResponderFactory} and produces {@link
+ * ru.daniil4jk.strongram.core.response.responder.smart.SmartResponderImpl}
+ * instances bound to a chat UUID and optional callback query.
+ */
 @RequiredArgsConstructor
 public class SmartResponderFactoryImpl implements ResponderFactory, SmartResponderFactory {
     private final ResponderFactory inherit;

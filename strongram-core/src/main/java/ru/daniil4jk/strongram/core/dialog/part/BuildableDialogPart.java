@@ -13,6 +13,13 @@ import ru.daniil4jk.strongram.core.filter.Filters;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * A builder-based implementation of {@link DialogPart}.
+ * Allows constructing dialog parts declaratively using {@link Builder}
+ * by providing a filter, notification messages, and a handler.
+ *
+ * @param <ENUM> the enum type representing the dialog states
+ */
 @ToString
 @EqualsAndHashCode
 public class BuildableDialogPart<ENUM extends Enum<ENUM>> implements DialogPart<ENUM> {

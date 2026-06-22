@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Registry and dispatcher that routes a {@link BotApiObject} to the appropriate {@link Finder}
+ * to produce an output of type {@code O}.
+ *
+ * @param <O> the output type produced by all registered finders
+ */
 public abstract class FinderService<O> {
     //Map<Class<I>, Parser<I, O>>
     private final Map<Class<?>, Finder<?, O>> parserMap = new HashMap<>();

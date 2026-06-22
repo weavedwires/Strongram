@@ -16,6 +16,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Base for handlers that route slash commands (e.g. /start, /help@bot) to
+ * {@link EachCommandHandler} callbacks. Supports bot-username disambiguation
+ * in group chats via the /command@bot pattern.
+ */
 @NoArgsConstructor
 public abstract class CommandUpstreamHandler extends FilteredUpstreamHandler {
     private static final String EMPTY = "";

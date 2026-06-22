@@ -13,6 +13,10 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * Static factory providing 80+ composable {@link Filter} instances for common
+ * Telegram update conditions such as message type, chat type, text matching, and more.
+ */
 public class Filters {
     private Filters() {
     }

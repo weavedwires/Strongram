@@ -15,6 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A state-machine-based implementation of {@link Dialog}.
+ * Uses an enum to define dialog states and maps each state to a {@link DialogPart}
+ * that handles requests while the dialog is in that state.
+ *
+ * @param <ENUM> the enum type representing the dialog states
+ */
 @ToString
 @EqualsAndHashCode
 public class DialogImpl<ENUM extends Enum<ENUM>> implements Dialog {

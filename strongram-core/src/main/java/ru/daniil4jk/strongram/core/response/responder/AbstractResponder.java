@@ -19,8 +19,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
-@ToString
-@EqualsAndHashCode
+/**
+ * Skeletal implementation of {@link Responder} that delegates every
+ * {@code send} and {@code sendForObject} overload to a single abstract
+ * {@code sendInternal} method, wrapping each call in a {@link
+ * ru.daniil4jk.strongram.core.response.dto.Response} wrapper.
+ */
 public abstract class AbstractResponder implements Responder {
     @Override
     public <T extends Serializable, Method extends BotApiMethod<T>> void send(Method response) {

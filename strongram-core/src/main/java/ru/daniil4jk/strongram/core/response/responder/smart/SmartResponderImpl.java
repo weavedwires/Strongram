@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+/**
+ * Default implementation of {@link SmartResponder}. Delegates low-level
+ * API calls to a {@link ru.daniil4jk.strongram.core.response.responder.sink.SinkResponder}
+ * and handles text splitting, media attachment, and callback answer logic.
+ */
 @ToString
 @EqualsAndHashCode
 public class SmartResponderImpl implements SmartResponder {

@@ -7,6 +7,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+/**
+ * Holds a {@link ReplyKeyboard} along with its {@link KeyboardType} (Reply or Inline)
+ * to allow downstream processing to distinguish keyboard types at runtime.
+ */
 @Data
 public class InteractiveKeyboardHolder {
     private final ReplyKeyboard keyboard;

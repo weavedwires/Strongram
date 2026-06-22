@@ -7,6 +7,10 @@ import ru.daniil4jk.strongram.core.util.Lazy;
 
 import java.util.*;
 
+/**
+ * In-memory implementation of {@link Storage} backed by a lazily-initialized
+ * {@link HashMap}. Supports add, set, get, and collection retrieval operations.
+ */
 @ToString
 @EqualsAndHashCode
 public class InMemoryStorage implements Storage {

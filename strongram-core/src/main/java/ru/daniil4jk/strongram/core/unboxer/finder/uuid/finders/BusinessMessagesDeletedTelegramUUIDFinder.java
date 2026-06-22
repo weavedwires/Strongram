@@ -4,6 +4,9 @@ import org.telegram.telegrambots.meta.api.objects.business.BusinessMessagesDelet
 import ru.daniil4jk.strongram.core.context.request.TelegramUUID;
 import ru.daniil4jk.strongram.core.unboxer.finder.TelegramObjectFinderException;
 
+/**
+ * Extracts the chat identity from {@link BusinessMessagesDeleted} as a {@link TelegramUUID}.
+ */
 public class BusinessMessagesDeletedTelegramUUIDFinder extends TelegramUUIDFinder<BusinessMessagesDeleted> {
     @Override
     public Class<BusinessMessagesDeleted> getInputClass() {

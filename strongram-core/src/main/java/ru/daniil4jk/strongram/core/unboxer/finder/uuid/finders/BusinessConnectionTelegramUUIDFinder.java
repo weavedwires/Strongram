@@ -5,6 +5,9 @@ import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 import ru.daniil4jk.strongram.core.context.request.TelegramUUID;
 import ru.daniil4jk.strongram.core.unboxer.finder.TelegramObjectFinderException;
 
+/**
+ * Extracts the user and chat identity from a {@link BusinessConnection} as a {@link TelegramUUID}.
+ */
 public class BusinessConnectionTelegramUUIDFinder extends TelegramUUIDFinder<BusinessConnection> {
     @Override
     public Class<BusinessConnection> getInputClass() {

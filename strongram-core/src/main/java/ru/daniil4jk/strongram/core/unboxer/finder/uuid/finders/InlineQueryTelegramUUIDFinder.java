@@ -5,6 +5,9 @@ import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import ru.daniil4jk.strongram.core.context.request.TelegramUUID;
 import ru.daniil4jk.strongram.core.unboxer.finder.TelegramObjectFinderException;
 
+/**
+ * Extracts the user identity from an {@link InlineQuery} as a {@link TelegramUUID}.
+ */
 public class InlineQueryTelegramUUIDFinder extends TelegramUUIDFinder<InlineQuery> {
     @Override
     public Class<InlineQuery> getInputClass() {

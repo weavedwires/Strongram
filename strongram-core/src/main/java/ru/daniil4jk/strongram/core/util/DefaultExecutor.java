@@ -7,6 +7,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Holder for a shared {@link java.util.concurrent.ScheduledExecutorService} that is
+ * lazily created on first access. Used as the default executor by Strongram components
+ * when no explicit executor is provided.
+ */
 @Slf4j
 public class DefaultExecutor {
     private static final Lazy<ScheduledExecutorService> DEFAULT_EXECUTOR = new Lazy<>(

@@ -6,6 +6,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+/**
+ * Extends {@link InfoExceptionFormatter} by appending the full stack trace
+ * for developer diagnostics alongside the user-friendly message.
+ */
 class DebugExceptionFormatter extends InfoExceptionFormatter {
     @Override
     public @NotNull String apply(Throwable th) {

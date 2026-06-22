@@ -8,6 +8,10 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
+/**
+ * Singleton that discovers {@link Finder} implementations via Java {@link java.util.ServiceLoader}
+ * and provides lookup by input or output class.
+ */
 public class SPIFinderRegistry {
     private static final SPIFinderRegistry me = new SPIFinderRegistry();
     @SuppressWarnings("rawtypes")

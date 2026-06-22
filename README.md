@@ -29,7 +29,7 @@ Strongram — это мощный и гибкий фреймворк для со
 <dependency>
     <groupId>ru.daniil4jk</groupId>
     <artifactId>strongram-longpolling</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -39,7 +39,7 @@ Strongram — это мощный и гибкий фреймворк для со
 <dependency>
     <groupId>ru.daniil4jk</groupId>
     <artifactId>strongram-webhook</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -51,20 +51,18 @@ Strongram — это мощный и гибкий фреймворк для со
 
 ```java
 import ru.daniil4jk.strongram.core.bot.ChainedBot;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.ChainFactory;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.configurable.ConfigurableChainFactory;
+import ru.daniil4jk.strongram.core.chain.configurator.OrderConfigurator;
+import ru.daniil4jk.strongram.core.upstream.UpstreamHandler;
 
 public class EchoBot extends ChainedBot {
     
-    public EchoBot(String botToken) {
-        super(botToken);
+    public EchoBot(String username) {
+        super(username);
     }
     
     @Override
-    protected ChainFactory getChain() {
-        return new ConfigurableChainFactory(chainOrderConfigurator -> {
-            chainOrderConfigurator.add(new EchoHandler());
-        });
+    protected void configureUpstream(OrderConfigurator<UpstreamHandler> chain) {
+        chain.add(new EchoHandler());
     }
 }
 ```
@@ -76,7 +74,7 @@ import ru.daniil4jk.strongram.core.filter.Filters;
 import ru.daniil4jk.strongram.core.upstream.FilteredUpstreamHandler;
 import ru.daniil4jk.strongram.core.unboxer.As;
 
-public class EchoHandler extends FilteredHandler {
+public class EchoHandler extends FilteredUpstreamHandler {
 
     @Override
     protected Filter getFilter() {
@@ -97,20 +95,18 @@ public class EchoHandler extends FilteredHandler {
 
 ```java
 import ru.daniil4jk.strongram.core.bot.ChainedBot;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.ChainFactory;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.configurable.ConfigurableChainFactory;
+import ru.daniil4jk.strongram.core.chain.configurator.OrderConfigurator;
+import ru.daniil4jk.strongram.core.upstream.UpstreamHandler;
 
 public class CommandBot extends ChainedBot {
     
-    public CommandBot(String botToken) {
-        super(botToken);
+    public CommandBot(String username) {
+        super(username);
     }
     
     @Override
-    protected ChainFactory getChain() {
-        return new ConfigurableChainFactory(chainOrderConfigurator -> {
-            chainOrderConfigurator.add(new BasicCommandHandler());
-        });
+    protected void configureUpstream(OrderConfigurator<UpstreamHandler> chain) {
+        chain.add(new GreetCommandHandler());
     }
 }
 ```
@@ -118,11 +114,11 @@ public class CommandBot extends ChainedBot {
 ```java
 import ru.daniil4jk.strongram.core.command.EachCommandHandler;
 import ru.daniil4jk.strongram.core.context.request.RequestContext;
-import ru.daniil4jk.strongram.core.upstream.preinstalled.TextCommandUpstreamHandler;
+import ru.daniil4jk.strongram.core.upstream.preinstalled.CommandUpstreamHandler;
 
 import java.util.Map;
 
-public class CommandHandler extends СommandHandler {
+public class GreetCommandHandler extends CommandUpstreamHandler {
 
     @Override
     protected Map<String, EachCommandHandler> getCommands() {
@@ -143,29 +139,26 @@ public class CommandHandler extends СommandHandler {
 
 ```java
 import ru.daniil4jk.strongram.core.bot.ChainedBot;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.ChainFactory;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.configurable.ConfigurableChainFactory;
+import ru.daniil4jk.strongram.core.chain.configurator.OrderConfigurator;
+import ru.daniil4jk.strongram.core.upstream.UpstreamHandler;
 import ru.daniil4jk.strongram.core.upstream.preinstalled.ExceptionReportUpstreamHandler;
 import ru.daniil4jk.strongram.core.report.exception.ExceptionFormatters;
 
 public class RobustBot extends ChainedBot {
 
-    public RobustBot(String botToken) {
-        super(botToken);
+    public RobustBot(String username) {
+        super(username);
     }
 
     @Override
-    protected ChainFactory getChain() {
-        return new ConfigurableChainFactory(chainOrderConfigurator -> {
-            // Встроенный обработчик исключений (должен быть первым чтобы через try-catch ловить исключения)
-            chainOrderConfigurator.add(new ExceptionReportHandler(ExceptionFormatters.debug()));
+    protected void configureUpstream(OrderConfigurator<UpstreamHandler> chain) {
+        // Встроенный обработчик исключений (должен быть первым чтобы через try-catch ловить исключения)
+        chain.add(new ExceptionReportUpstreamHandler(ExceptionFormatters.debug()));
 
-            // Наш обработчик команд
-            chainOrderConfigurator.add(new CommandHandler());
+        // Наш обработчик команд
+        chain.add(new RobustCommandHandler());
 
-            // Встроенный обработчик неизвестных команд (должен быть последним)
-            chainOrderConfigurator.add(new CannotProcessHandler());
-        });
+        // CannotProcessUpstreamHandler добавляется автоматически последним
     }
 }
 ```
@@ -173,11 +166,11 @@ public class RobustBot extends ChainedBot {
 ```java
 import ru.daniil4jk.strongram.core.command.EachCommandHandler;
 import ru.daniil4jk.strongram.core.context.request.RequestContext;
-import ru.daniil4jk.strongram.core.upstream.preinstalled.TextCommandUpstreamHandler;
+import ru.daniil4jk.strongram.core.upstream.preinstalled.CommandUpstreamHandler;
 
 import java.util.Map;
 
-public class CommandHandler extends CommandHandler {
+public class RobustCommandHandler extends CommandUpstreamHandler {
 
     @Override
     protected Map<String, EachCommandHandler> getCommands() {
@@ -204,20 +197,18 @@ public class CommandHandler extends CommandHandler {
 
 ```java
 import ru.daniil4jk.strongram.core.bot.ChainedBot;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.ChainFactory;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.configurable.ConfigurableChainFactory;
+import ru.daniil4jk.strongram.core.chain.configurator.OrderConfigurator;
+import ru.daniil4jk.strongram.core.upstream.UpstreamHandler;
 
 public class FileBot extends ChainedBot {
     
-    public FileBot(String botToken) {
-        super(botToken);
+    public FileBot(String username) {
+        super(username);
     }
     
     @Override
-    protected ChainFactory getChain() {
-        return new ConfigurableChainFactory(chainOrderConfigurator -> {
-            chainOrderConfigurator.add(new FileCommandHandler());
-        });
+    protected void configureUpstream(OrderConfigurator<UpstreamHandler> chain) {
+        chain.add(new FileCommandHandler());
     }
 }
 ```
@@ -231,7 +222,7 @@ import ru.daniil4jk.strongram.core.response.responder.smart.SmartResponder;
 import java.io.File;
 import java.util.Map;
 
-public class FileCommandHandler extends CommandHandler {
+public class FileCommandHandler extends TextCommandUpstreamHandler {
 
     @Override
     protected Map<String, EachCommandHandler> getCommands() {
@@ -280,22 +271,20 @@ public class FileCommandHandler extends CommandHandler {
 
 ```java
 import ru.daniil4jk.strongram.core.bot.ChainedBot;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.ChainFactory;
-import ru.daniil4jk.strongram.core.chainOrderConfigurator.factory.configurable.ConfigurableChainFactory;
+import ru.daniil4jk.strongram.core.chain.configurator.OrderConfigurator;
+import ru.daniil4jk.strongram.core.upstream.UpstreamHandler;
 import ru.daniil4jk.strongram.core.upstream.preinstalled.DialogUpstreamHandler;
 
 public class PizzaBot extends ChainedBot {
 
-    public PizzaBot(String botToken) {
-        super(botToken);
+    public PizzaBot(String username) {
+        super(username);
     }
 
     @Override
-    protected ChainFactory getChain() {
-        return new ConfigurableChainFactory(chainOrderConfigurator -> {
-            chainOrderConfigurator.add(new PizzaOrderCommandHandler());
-            chainOrderConfigurator.add(new DialogHandler());
-        });
+    protected void configureUpstream(OrderConfigurator<UpstreamHandler> chain) {
+        chain.add(new PizzaOrderCommandHandler());
+        chain.add(new DialogUpstreamHandler());
     }
 }
 ```
@@ -312,7 +301,7 @@ import ru.daniil4jk.strongram.core.unboxer.As;
 
 import java.util.Map;
 
-public class PizzaOrderCommandHandler extends TextCommandHandler {
+public class PizzaOrderCommandHandler extends TextCommandUpstreamHandler {
 
     @Override
     protected Map<String, EachCommandHandler> getCommands() {
@@ -360,7 +349,7 @@ public class PizzaOrderCommandHandler extends TextCommandHandler {
                         .build())
                 .build();
 
-        ctx.getRequestScopeStorage().add(DialogHandler.DIALOGS_CONTEXT_FIELD_NAME, dialog);
+        ctx.getRequestScopeStorage().add(DialogUpstreamHandler.DIALOGS_CONTEXT_FIELD_NAME, dialog);
     }
 
     public enum PizzaState {
@@ -387,7 +376,7 @@ import ru.daniil4jk.strongram.core.unboxer.As;
 
 import java.util.Map;
 
-public class PizzaOrderCommandHandler extends TextCommandHandler {
+public class PizzaOrderCommandHandler extends TextCommandUpstreamHandler {
 
     @Override
     protected Map<String, EachCommandHandler> getCommands() {
@@ -428,7 +417,7 @@ public class PizzaOrderCommandHandler extends TextCommandHandler {
                 .part(PizzaState.PAYMENT, new PaymentDialogPart())
                 .build();
 
-        ctx.getRequestScopeStorage().add(DialogHandler.DIALOGS_CONTEXT_FIELD_NAME, dialog);
+        ctx.getRequestScopeStorage().add(DialogUpstreamHandler.DIALOGS_CONTEXT_FIELD_NAME, dialog);
     }
 
     public enum PizzaState {
@@ -463,8 +452,8 @@ public class PaymentDialogPart extends ExtendableDialogPart<PizzaState> {
     protected Filter getFilter() {
         return Filters.hasMessageText().and(
                 Filters.iterateOr(
-                        Filters.equalsIgnoreCase(),
-                        "оплатить", "отмена"
+                        Filters.textEqualsIgnoreCase("оплатить"),
+                        Filters.textEqualsIgnoreCase("отмена")
                 )
         );
     }
@@ -501,7 +490,7 @@ public class PaymentDialogPart extends ExtendableDialogPart<PizzaState> {
 
         String pizzaName = dCtx.getDialogScopeStorage().get("pizzaName");
         String address = dCtx.getDialogScopeStorage().get("address");
-        Long userId = ctx.getUUID().getUserId();
+        Long userId = ctx.getUUID().getReplyChatId();
 
         try {
             // Обработка оплаты через сервис
@@ -550,7 +539,7 @@ public class Main {
             
             application.registerBot(new LongPollingBotAdapter(
                 "YOUR_BOT_TOKEN",
-                new Bot("YOUR_BOT_NAME")
+                new EchoBot("YOUR_BOT_USERNAME")
             ));
         } catch (Exception e) {
             System.err.println("❌ Failed to start bot: " + e.getMessage());
@@ -574,17 +563,17 @@ public class Main {
             
             application.registerBot(new LongPollingBotAdapter(
                 "YOUR_FIRST_BOT_TOKEN",
-                new Bot("YOUR_FIRST_BOT_NAME")
+                new EchoBot("YOUR_FIRST_BOT_USERNAME")
             ));
             
             application.registerBot(new LongPollingBotAdapter(
                 "YOUR_SECOND_BOT_TOKEN",
-                new Bot("YOUR_SECOND_BOT_NAME")
+                new CommandBot("YOUR_SECOND_BOT_USERNAME")
             ));
             
             application.registerBot(new LongPollingBotAdapter(
                 "YOUR_THIRD_BOT_TOKEN",
-                new Bot("YOUR_THIRD_BOT_NAME")
+                new FileBot("YOUR_THIRD_BOT_USERNAME")
             ));
             
         } catch (Exception e) {
@@ -613,7 +602,7 @@ public class Main {
                 new WebhookBotAdapter(
                     new URI("https://yourdomain.com/webhook/bot").toURL(),
                     "YOUR_BOT_TOKEN",
-                    new Bot("YOUR_BOT_NAME")
+                    new EchoBot("YOUR_BOT_USERNAME")
                 )
             );
         } catch (Exception e) {
@@ -660,7 +649,7 @@ private SmartResponderFactory responderFactory;
 ```java
 @Bean
 SmartResponderFactory responderFactory(YourBot bot) {
-    return bot.getResponderFactory();
+    return new SmartResponderFactoryImpl(bot.getResponderFactory());
 }
 ```
 
@@ -669,14 +658,18 @@ SmartResponderFactory responderFactory(YourBot bot) {
 Допустим, у вас есть сервис заказов, который должен слать уведомления:
 
 ```java
+import ru.daniil4jk.strongram.core.context.request.TelegramUUID;
+import org.telegram.telegrambots.meta.api.objects.chat.Chat;
+
 @Service
 public class OrderNotificationService {
 
     @Autowired
     private SmartResponderFactory responderFactory;
 
-    public void notifyStatus(Long userId, String status) {
-        responderFactory.createSmart(userId).send("📦 Статус: " + status);
+    public void notifyStatus(Chat chat, String status) {
+        TelegramUUID uuid = new TelegramUUID(chat);
+        responderFactory.createSmart(uuid, null).send("📦 Статус: " + status);
     }
 }
 ```
@@ -687,8 +680,9 @@ public class OrderNotificationService {
 
 ```java
 public void broadcast(String message) {
-    for (Long chatId : userRepository.getAllChatIds()) {
-        responderFactory.createSmart(chatId).send(message);
+    for (Chat chat : userRepository.getAllChats()) {
+        TelegramUUID uuid = new TelegramUUID(chat);
+        responderFactory.createSmart(uuid, null).send(message);
     }
 }
 ```
@@ -697,7 +691,7 @@ public void broadcast(String message) {
 
 - **Напоминания** — через_scheduler (Spring Scheduler, Quartz)_
 - **Inline-кнопки** — создаёте `SmartResponder` и передаёте `InlineKeyboardMarkup`
-- **Редактирование сообщений** — используйте тот же `responder` с методом `editMessage()`
+- **Редактирование сообщений** — используйте `responder.send(EditMessageText...)` или напрямую через `Responder.send(Method)`
 
 ## 🤝 Вклад в проект
 

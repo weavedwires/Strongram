@@ -9,6 +9,14 @@ import ru.daniil4jk.strongram.core.context.request.RequestContext;
 import ru.daniil4jk.strongram.core.context.storage.Storage;
 import ru.daniil4jk.strongram.core.filter.Filter;
 
+/**
+ * An abstract base for creating {@link DialogPart} implementations via subclassing.
+ * Subclasses override {@link #getFilter()}, {@link #firstNotification},
+ * {@link #repeatNotification}, and {@link #accept(RequestContext, DialogContext)}
+ * to define dialog step behavior.
+ *
+ * @param <ENUM> the enum type representing the dialog states
+ */
 @ToString
 @EqualsAndHashCode
 public abstract class ExtendableDialogPart<ENUM extends Enum<ENUM>> implements DialogPart<ENUM> {

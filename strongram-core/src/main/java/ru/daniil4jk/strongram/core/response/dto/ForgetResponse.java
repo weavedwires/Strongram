@@ -7,6 +7,10 @@ import org.telegram.telegrambots.meta.api.methods.botapimethods.PartialBotApiMet
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
+/**
+ * A fire-and-forget {@link Response} that executes the API call without
+ * capturing the result. Errors are logged and silently swallowed.
+ */
 @Slf4j
 @ToString
 @EqualsAndHashCode

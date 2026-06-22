@@ -16,6 +16,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * Downstream handler that sets a default {@link ReplyKeyboard} on outgoing messages
+ * if none is already set. Uses {@link java.lang.invoke.MethodHandle} to dynamically
+ * discover and invoke get/set methods on any {@link PartialBotApiMethod} subclass.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class AddDefaultKeyboardDownstreamHandler extends BaseDownstreamHandler {
