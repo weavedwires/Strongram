@@ -89,9 +89,7 @@ public class EchoHandler extends FilteredUpstreamHandler {
 }
 ```
 
-### c
-
-Бот с командой '/hello'
+### 2. Бот с командой '/hello'
 
 ```java
 import ru.daniil4jk.strongram.core.bot.ChainedBot;
@@ -158,7 +156,8 @@ public class RobustBot extends ChainedBot {
         // Наш обработчик команд
         chain.add(new RobustCommandHandler());
 
-        // CannotProcessUpstreamHandler добавляется автоматически последним
+        // Встроенный обработчик исключений
+        chain.add(new CannotProcessUpstreamHandler("Неизвестная команда"));
     }
 }
 ```
@@ -736,9 +735,7 @@ public void broadcast(String message) {
 ## Благодарности:
 
 - **[TelegramBots Java Library](https://github.com/rubenlagus/TelegramBots)** - отличная базовая библиотека для работы с Telegram Bot API от [@rubenlagus](https://github.com/rubenlagus)
-- **[Project Lombok](https://projectlombok.org/)** - уменьшение boilerplate кода
-- **[Apache Log4j](https://logging.apache.org/log4j/)** - система логирования
-- Все [контрибьюторы](https://github.com/daniil4jk/strongram/graphs/contributors) проекта
+- Все [контрибьюторы](https://github.com/weavedwires/strongram/graphs/contributors) проекта
 
 Спасибо всем, кто использует Strongram и делится обратной связью!
 
@@ -748,6 +745,6 @@ public void broadcast(String message) {
 
 ⭐ **Если вам нравится Strongram, поставьте звезду на GitHub!** ⭐
 
-Made with ❤️ by [daniil4jk](https://github.com/daniil4jk)
+Made with ❤️ by [Weavedwires](https://github.com/weavedwires)
 
 </div>
